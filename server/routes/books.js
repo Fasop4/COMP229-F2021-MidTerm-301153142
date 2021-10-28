@@ -59,7 +59,7 @@ router.post('/add', (req, res, next) => {
 // GET the Book Details page in order to edit an existing Book
 router.get('/:id', (req, res, next) => {
 
-    let bookId = req.params.id;
+    let bookId = req.params.bookId;
 
     books.findById(bookId, {}, {}, (err, bookToEdit) => {
       if (err) {
@@ -77,7 +77,7 @@ router.get('/:id', (req, res, next) => {
 // POST - process the information passed from the details form and update the document
 router.post('/:id', (req, res, next) => {
 
-    let bookId = req.params.id;
+    let bookId = req.params.bookId;
 
     console.log(bookId);
     console.log(req.body);
@@ -105,9 +105,16 @@ router.post('/:id', (req, res, next) => {
 // GET - process the delete by user id
 router.get('/delete/:id', (req, res, next) => {
 
-    /*****************
-     * ADD CODE HERE *
-     *****************/
+    let bookId = req.params.bookId;
+
+    book.remove({_id: bookId}, (err) => {
+      if (err) {
+        console.error(err);
+        res.end(err);
+      }
+
+      res.redirect("/books")
+    });
 });
 
 
