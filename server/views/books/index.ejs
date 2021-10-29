@@ -33,14 +33,14 @@
 
               <td class="text-center">
                 <!-- Edit button -->
-                <a href="/books/details/<%= favourite_books[count]._id %>" class="btn btn-dark btn-sm edit"><i
-                    class="fas fa-edit fa-sm"></i> Edit</a>
+                <a href="/books/<%= favourite_books[count]._id %>" class="btn btn-dark btn-sm"><i
+                    class="fa fa-edit fa-sm"></i> Edit</a>
               </td>
 
               <td class="text-center">
                 <!-- Delete button -->
                 <a href="/books/delete/<%= favourite_books[count]._id %>" class="btn btn-danger btn-sm delete"><i
-                    class="fas fa-minus-circle"></i> Delete</a> 
+                    class="fa fa-minus-circle"></i> Delete</a> 
               </td>
             </tr>
             <% } %>

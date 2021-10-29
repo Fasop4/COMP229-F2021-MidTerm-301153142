@@ -10,13 +10,13 @@ let book = require('../models/books');
 /* GET books List page. READ */
 router.get('/', (req, res, next) => {
   // find all books in the books collection
-  books.find((err, book) => {
+  books.find((err, booksCollection) => {
     if (err) {
       return console.error(err);
     } else {
       res.render('books/index', {
         title: 'Books',
-        favourite_books: "",
+        favourite_books: booksCollection,
       });
     }
   });
@@ -45,13 +45,13 @@ router.post('/add', (req, res, next) => {
 
   console.log(req.body);
 
-  book.create(newBook, (err, book) => {
+  book.create(newBook, (err) => {
     if (err) {
       console.error(err);
       res.end(err);
     } else {
       // refresh index book list page
-      res.redirect("/books/index")
+      res.redirect("/books")
     }
   });
 });
@@ -61,14 +61,14 @@ router.get('/:id', (req, res, next) => {
 
   let bookId = req.params.id;
 
-  book.findById(bookId, (err, book) => {
+  book.findById(bookId, (err, bookToEdit) => {
     if (err) {
       console.error(err);
       res.end(err);
     } else {
-      res.render("/books/details", {
+      res.render("books/details", {
         title: "Edit Book",
-        favourite_books: books
+        favourite_books: bookToEdit
       });
     }
   });
@@ -79,9 +79,6 @@ router.post('/:id', (req, res, next) => {
 
   let bookId = req.params.id;
 
-  console.log(bookId);
-  console.log(req.body);
-
   let updatedBook = book({
     "_id": bookId,
     "Title": req.body.title,
@@ -90,6 +87,7 @@ router.post('/:id', (req, res, next) => {
     "Genre": req.body.genre
   });
 
+  console.log()
   book.updateOne({
     _id: bookId
   }, updatedBook, {}, (err) => {
@@ -98,7 +96,7 @@ router.post('/:id', (req, res, next) => {
       res.end(err);
     } else {
 
-      res.redirect("books/index")
+      res.redirect("/books")
     }
   });
 });
@@ -116,7 +114,7 @@ router.get('/delete/:id', (req, res, next) => {
       res.end(err);
     } else {
 
-      res.redirect("books/index")
+      res.redirect("/books")
     }
   });
 });
