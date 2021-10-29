@@ -24,22 +24,22 @@
           </thead>
           <tbody>
             <!-- Template Row -->
-            <% for (let count = 0; count < books.length; count++) { %>
+            <% for (let count = 0; count < favourite_books.length; count++) { %>
             <tr>
-              <td><%= books[count].Title %></td>
-              <td class="text-center">$<%= books[count].Price %></td>
-              <td class="text-center"><%= books[count].Author %></td>
-              <td class="text-center"><%= books[count].Genre %></td>
+              <td><%= favourite_books[count].Title %></td>
+              <td class="text-center">$<%= favourite_books[count].Price %></td>
+              <td class="text-center"><%= favourite_books[count].Author %></td>
+              <td class="text-center"><%= favourite_books[count].Genre %></td>
 
               <td class="text-center">
                 <!-- Edit button -->
-                <a href="/books/details/<%= books[count]._id %>" class="btn btn-dark btn-sm edit"><i
+                <a href="/books/details/<%= favourite_books[count]._id %>" class="btn btn-dark btn-sm edit"><i
                     class="fas fa-edit fa-sm"></i> Edit</a>
               </td>
 
               <td class="text-center">
                 <!-- Delete button -->
-                <a href="/books/delete/<%= books[count]._id %>" class="btn btn-danger btn-sm delete"><i
+                <a href="/books/delete/<%= favourite_books[count]._id %>" class="btn btn-danger btn-sm delete"><i
                     class="fas fa-minus-circle"></i> Delete</a> 
               </td>
             </tr>

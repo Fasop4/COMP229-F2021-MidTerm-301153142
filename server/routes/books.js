@@ -10,13 +10,13 @@ let book = require('../models/books');
 /* GET books List page. READ */
 router.get('/', (req, res, next) => {
   // find all books in the books collection
-  book.find((err, books) => {
+  books.find((err, book) => {
     if (err) {
       return console.error(err);
     } else {
       res.render('books/index', {
         title: 'Books',
-        books: "",
+        favourite_books: "",
       });
     }
   });
@@ -29,63 +29,65 @@ router.get('/add', (req, res, next) => {
   // show the details page to add a new book
   res.render("books/details", {
     title: "Add book",
-    books: ""
-  })
+    favourite_books: "",
+  });
 });
 
 // POST process the Book Details page and create a new Book - CREATE
 router.post('/add', (req, res, next) => {
 
-  let newBook = new book({
-    NameTextField: req.body.NameTextField,
-    PriceTextField: req.body.PriceTextField,
-    AuthorTextField: req.body.AuthorTextField,
-    GenreTextField: req.body.GenreTextField
+  let newBook = book({
+    "Title": req.body.title,
+    "Price": req.body.price,
+    "Author": req.body.author,
+    "Genre": req.body.genre
   });
 
-  books.create(newBook, (err) => {
+  console.log(req.body);
+
+  book.create(newBook, (err, book) => {
     if (err) {
       console.error(err);
       res.end(err);
+    } else {
+      // refresh index book list page
+      res.redirect("/books/index")
     }
-
-    res.redirect("index")
-  })
-
+  });
 });
 
 // GET the Book Details page in order to edit an existing Book
 router.get('/:id', (req, res, next) => {
 
-  let bookId = req.params.bookId;
+  let bookId = req.params.id;
 
-  books.findById(bookId, {}, {}, (err, bookToEdit) => {
+  book.findById(bookId, (err, book) => {
     if (err) {
       console.error(err);
       res.end(err);
+    } else {
+      res.render("/books/details", {
+        title: "Edit Book",
+        favourite_books: books
+      });
     }
-
-    res.render("books/details", {
-      title: "Edit Book",
-      books: bookToEdit,
-    });
   });
 });
 
 // POST - process the information passed from the details form and update the document
 router.post('/:id', (req, res, next) => {
 
-  let bookId = req.params.bookId;
+  let bookId = req.params.id;
 
   console.log(bookId);
   console.log(req.body);
 
-  let updatedBook = new book({
-    _id: bookId,
-    NameTextField: req.body.NameTextField,
-    PriceTextField: req.body.PriceTextField,
-    AuthorTextField: req.body.AuthorTextField,
-    GenreTextField: req.body.GenreTextField
+  let updatedBook = book({
+    "_id": bookId,
+    "Title": req.body.title,
+    "Price": req.body.price,
+    "Author": req.body.author,
+    "Genre": req.body.genre
   });
 
   book.updateOne({
@@ -94,17 +96,17 @@ router.post('/:id', (req, res, next) => {
     if (err) {
       console.error(err);
       res.end(err);
+    } else {
+
+      res.redirect("books/index")
     }
-
-    res.redirect("books/index")
-  })
-
+  });
 });
 
 // GET - process the delete by user id
 router.get('/delete/:id', (req, res, next) => {
 
-  let bookId = req.params.bookId;
+  let bookId = req.params.id;
 
   book.remove({
     _id: bookId
@@ -112,9 +114,10 @@ router.get('/delete/:id', (req, res, next) => {
     if (err) {
       console.error(err);
       res.end(err);
-    }
+    } else {
 
-    res.redirect("books/index")
+      res.redirect("books/index")
+    }
   });
 });
 
