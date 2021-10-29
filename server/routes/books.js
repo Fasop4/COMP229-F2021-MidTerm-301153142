@@ -1,3 +1,8 @@
+/*Author: Fabian Soto Palacio
+Student ID : 301153142
+COMP229-MidTerm-F2021-301153152
+Mid-term test*/
+
 // modules required for routing
 let express = require('express');
 let router = express.Router();
@@ -61,11 +66,13 @@ router.get('/:id', (req, res, next) => {
 
   let bookId = req.params.id;
 
+  //find book by id and pass the book that is going to be edited. bring error if it doesn't find any
   book.findById(bookId, (err, bookToEdit) => {
     if (err) {
       console.error(err);
       res.end(err);
     } else {
+      //render of path that will be display at /books/:id
       res.render("books/details", {
         title: "Edit Book",
         favourite_books: bookToEdit
@@ -88,6 +95,8 @@ router.post('/:id', (req, res, next) => {
   });
 
   console.log()
+
+  //select to update a book, finding it by ID, if book id not found give back an error.
   book.updateOne({
     _id: bookId
   }, updatedBook, {}, (err) => {
@@ -106,6 +115,7 @@ router.get('/delete/:id', (req, res, next) => {
 
   let bookId = req.params.id;
 
+  //select a book to DELETE finding it by ID, if book not found give error.
   book.remove({
     _id: bookId
   }, (err) => {
